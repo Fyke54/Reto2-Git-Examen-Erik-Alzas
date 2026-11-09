@@ -13,7 +13,7 @@ def fn_EliminarAgotados_lst(productos_lst):
     Elimina del inventario los productos con stock 0
     y devuelve la lista de productos que quedan.
     """
-    for producto_dic in productos_lst[:]:        
+    for producto_dic in productos_lst[:]:      #Fallo1: quitar productos agotados sin que se salte elementos
         if producto_dic["stock"] == 0:
             productos_lst.remove(producto_dic)
 
@@ -30,7 +30,7 @@ def fn_ValorPorCategoria_dic(productos_lst):
     for producto_dic in productos_lst:
         categoria_str = producto_dic["categoria"]
         precio_fl = producto_dic["precio"]
-        unidades_int = producto_dic["stock"]
+        unidades_int = producto_dic["stock"]        #Fallo2: para el calculo del valor del inventario usaba precio x minimo en vez de precio x unidades en stock
         valor_fl = precio_fl * unidades_int
 
         valores_dic[categoria_str] = valores_dic.get(categoria_str, 0) + valor_fl
@@ -66,7 +66,7 @@ def fn_ProductosAReponer_lst(productos_lst):
     for producto_dic in productos_lst:
         bajo_bool = producto_dic["stock"] <= producto_dic["minimo"]
 
-        if bajo_bool and not producto_dic["pendiente"]:
+        if bajo_bool and not producto_dic["pendiente"]:         #Fallo3: Estaba puesto or en vez de and y asi que no hacia caso bien al pendiente
             a_reponer_lst.append(producto_dic["nombre"])
 
     return a_reponer_lst
